@@ -1,16 +1,44 @@
-import React from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import React, {useRef} from 'react';
+import {Animated, Pressable, StyleSheet, Text, View} from 'react-native';
 import {colors} from '../../../config/theme/theme.tsx';
 
 export const Animation101Screen = () => {
+
+  const animatedOpacity = useRef(new Animated.Value(0) ).current;
+
+
+
+  const fadeIn = () => {
+    Animated.timing(animatedOpacity, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => console.log("Animated ended"));
+  };
+
+  const fadeOut = () => {
+    Animated.timing(animatedOpacity,{
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => console.log("Animated ended"));
+  };
+
   return (
     <View style={styles.container}>
-      <View style={[styles.purpleBox]} />
-      <Pressable onPress={() => console.log('fadeIn')} style={{marginTop:10}}>
+      <Animated.View
+        style={[styles.purpleBox,
+          {
+            opacity: animatedOpacity,
+          }
+        ]}
+
+      />
+      <Pressable onPress={fadeIn} style={{marginTop:10}}>
         <Text>FadeIn</Text>
       </Pressable>
 
-      <Pressable onPress={() => console.log('fadeOut')} style={{marginTop:10}}>
+      <Pressable onPress={fadeOut} style={{marginTop:10}}>
         <Text>FadeOut</Text>
       </Pressable>
     </View>
